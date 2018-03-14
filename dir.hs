@@ -8,7 +8,7 @@ pc::String -> String -> String
 pc "" a = reverse a
 pc ('/':xs) a = pc xs ""
 pc (x:xs) a = pc xs (x:a)
-
+--
 pc'::String -> Bool
 pc' "" = False
 pc' "." = False
@@ -34,9 +34,5 @@ main = do
   c <- getCurrentDirectory
   --print c
   fr $ c ++ "/"
-
-
-
-
 
 
