@@ -12,6 +12,12 @@ for ($i = 0; $i -lt $c; $i++) {
 [System.Windows.Forms.SendKeys]::SendWait("{TAB}") }
 }
 #####################
+#逆タブ回し
+function tbs ($c){
+for ($i = 0; $i -lt $c; $i++) {
+[System.Windows.Forms.SendKeys]::SendWait("+{TAB}") }
+}
+#####################
 #スリープ（秒）、10で10秒
 function slp ($i){ Start-Sleep -s $1 }
 #####################
@@ -33,6 +39,12 @@ start-sleep -Milliseconds 500
 #####################
 #キー入力
 function key ($k) { [System.Windows.Forms.SendKeys]::SendWait($k) }
+#####################
+#時間
+function df($n=0){
+return (get-date).adddays($n).ToString("yyyy/MM/dd")
+}
+
 #######################################
 #tb...タブを引数の数だけ連発
 #s...引数の秒を待ち
@@ -40,6 +52,7 @@ function key ($k) { [System.Windows.Forms.SendKeys]::SendWait($k) }
 #e...エンター
 #activeprocess...タスクマネージャーから右クリックとかでプロセス名見れるからそれを最前面に
 #k...[System.Windows.Forms.SendKeys]::SendWaitが長杉
+#df...0で今日-3で三日前
 #######################################
 #######################################
 #######################################
@@ -103,6 +116,7 @@ ALT	%
 #######################################
 #######################################
 #tb...タブを引数の数だけ連発
+#tbs...shift+タブを引数の数だけ連発
 #slp...引数の秒を待ち
 #slpm...引数のマイクロ秒を待ち
 #ent...エンター
@@ -112,10 +126,10 @@ ALT	%
 #######################################
 #>
 #ここから本番処理スタート
-& "C:\Users\●●●\Desktop\psDir\無題1.txt"
-activeprocess "sakura"
+#& "C:\Users\●●●\Desktop\psDir\無題1.txt"
+#activeprocess "sakura"
 slp 1
-tb 1
+tbs 6
 key "wwww"
 
 
