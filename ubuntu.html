@@ -1,0 +1,145 @@
+<pre>
+//パッケージアップデート
+$ sudo apt update
+$ sudo apt upgrade
+##################################################
+//php7.2をインストール
+sudo apt install software-properties-common
+$ sudo add-apt-repository ppa:ondrej/php
+$ sudo apt update
+$ sudo apt install php7.2
+// 関連するパッケージもインストール
+$ sudo apt install php7.2-mbstring php7.2-mysql php7.2-xml php7.2-gd php7.2-zip
+//ララベル
+curl -sS https://getcomposer.org/installer | php
+sudo mv composer.phar /usr/local/bin/composer
+sudo chmod +x /usr/local/bin/composer
+composer global require "laravel/installer"
+//パス通し
+export PATH="~/.config/composer/vendor/bin:$PATH"
+//アプリ作成
+laravel new TestApp
+##################################################
+//Postfixインストール
+sudo apt install postfix
+//編集
+sudo vi /etc/postfix/main.cf
+</pre>
+
+<pre style="margin:20px;background-color:lightgray;">
+# 59行目：コメント解除
+mail_owner = postfix
+# 76行目：コメント解除しホスト名指定★
+myhostname = mail.hogefuga.com
+# 83行目：コメント解除しドメイン名指定
+mydomain = hogefuga.com
+# 104行目：コメント解除
+myorigin = $mydomain
+# 118行目：コメント解除
+inet_interfaces = all
+# 166行目：コメント解除
+mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+# 209行目：コメント解除
+local_recipient_maps = unix:passwd.byname $alias_maps
+# 268行目：自ネットワーク追記(ifconfigコマンドでeth0のinetアドレスが10.0.2.15だったので10.0.0.0/24を追記)
+mynetworks = 127.0.0.0/8, 10.0.0.0/24
+# 388行目：コメント解除
+alias_maps = hash:/etc/aliases
+# 399行目：コメント解除
+alias_database = hash:/etc/aliases
+# 421行目：コメント解除 ( Maildir形式へ移行 )
+home_mailbox = Maildir/
+# 557行目：コメントにしてその下に追記
+#smtpd_banner = $myhostname ESMTP $mail_name (@@DISTRO@@)
+smtpd_banner = $myhostname ESMTP
+# 632行目：追記
+sendmail_path = /usr/sbin/postfix
+# 637行目：追記
+newaliases_path = /usr/bin/newaliases
+# 642行目：追記
+mailq_path = /usr/bin/mailq
+# 648行目：追記
+setgid_group = postdrop
+# 652行目：コメント化
+#html_directory =
+# 656行目：コメント化
+#manpage_directory =
+# 661行目：コメント化
+#sample_directory =
+# 665行目：コメント化
+#readme_directory =
+# 最終行へ追記：送受信メールサイズを10Mに制限
+message_size_limit = 10485760
+# メールボックスサイズを1Gに制限
+mailbox_size_limit = 1073741824
+# 以下SMTP-Auth用
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = private/auth
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_security_options = noanonymous
+smtpd_sasl_local_domain = $myhostname
+smtpd_recipient_restrictions = permit_mynetworks,permit_auth_destination,permit_sasl_authenticated,reject
+
+</pre>
+
+<pre>
+##################################################
+//確認
+postconf -d
+postconf -n
+//エイリアス更新
+sudo newaliases
+//postfix再起動
+sudo /etc/init.d/postfix restart
+//メール送信コマンド取得
+sudo apt install mailutils
+//メール送信
+mail <user-name>@localhost
+CC:
+Subject:
+(Ctrl+D)
+
+##################################################
+//dovecotインストール
+sudo apt install dovecot-core dovecot-pop3d dovecot-imapd
+
+##################################################
+sudo vi /etc/dovecot/dovecot.conf
+# 30行目：変更 ( IPv6をリスンしない場合 )
+listen = *
+##################################################
+sudo vi /etc/dovecot/conf.d/10-auth.conf
+# 10行目平文テキストでも認証可能とする
+disable_plaintext_auth = yes
+# 100行目：追記
+auth_mechanisms = plain login
+##################################################
+sudo vi /etc/dovecot/conf.d/10-mail.conf
+# メールボックスの保存先を指定する(Postfixのhome_mailboxと同じ場所)
+mail_location = maildir:~/Maildir
+##################################################
+# 96-98行目：コメント解除し追記
+# Postfix smtp-auth
+unix_listener /var/spool/postfix/private/auth {
+    mode = 0666
+    user = postfix
+    group = postfix
+}
+##################################################
+sudo vi /etc/dovecot/conf.d/10-ssl.conf
+# 6行目：コメント解除して変更(SSLなし)
+ssl = no
+# 12,13行目：コメントにする
+#ssl_cert = &lt;/etc/dovecot/dovecot.pem
+#ssl_key = &lt;/etc/dovecot/private/dovecot.pem
+##################################################
+//Dovecotを起動
+sudo initctl start dovecot
+
+
+
+
+
+
+
+</pre>
