@@ -118,6 +118,7 @@ sudo vi /etc/dovecot/conf.d/10-mail.conf
 # メールボックスの保存先を指定する(Postfixのhome_mailboxと同じ場所)
 mail_location = maildir:~/Maildir
 ##################################################
+sudo vi /etc/dovecot/conf.d/10-auth.conf
 # 96-98行目：コメント解除し追記
 # Postfix smtp-auth
 unix_listener /var/spool/postfix/private/auth {
