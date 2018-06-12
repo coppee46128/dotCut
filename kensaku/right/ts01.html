@@ -1,11 +1,7 @@
 <html>
 <head>
-<title>リファレンス</title>
 <meta charest="utf8">
-<script>
-
-
-</script>
+<script></script>
 
 <style>
 body{
@@ -14,11 +10,46 @@ margin:50px;
 </style>
 
 </head>
-<!--nobanner-->
-
 <body>
+<pre>
+<p><b>gitメモ</b></p>
+<!---------------------------------------------->
+ユーザー設定
+git config --global user.name "ユーザ名”
+git config --global user.email メールアドレス
+#git config --global user.name "coppee46128”
+#git config --global user.email ---@gmail.com
 
-tststststst
+リポジトリ作成
+git init
 
+コミット
+git add .
+git commit -m “first commit”
+
+確認
+git log
+
+１つ前のコミット取り消し
+２つ前のコミット取り消し
+３前のコミット取り消し
+git reset --hard HEAD^
+git reset --hard HEAD^^
+git reset --hard HEAD^^^
+
+URL指定
+git remote add origin プッシュするURL
+#git remote add origin https://github.com/coppee46128/dotCut.git
+
+プッシュ
+git push -u origin master
+
+更新取得
+git pull
+
+
+
+<!---------------------------------------------->
+</pre>
 </body>
 </html>
