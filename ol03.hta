@@ -1,0 +1,125 @@
+
+
+
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.19/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.19/themes/redmond/jquery-ui.css">
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.19/i18n/jquery-ui-i18n.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<style>
+body{background-color:lightgray;}
+.mailadd{}
+</style>
+</head>
+<body>
+<span id="adrst"></span>
+<input id="adrs" type="text" width="200">
+<button id="adrsb">メールアドレス</button><br>
+
+<input id="mailfol" type="text"><br>
+
+<button id="btn">btn</button>
+<p id="p"></p>
+
+
+</body>
+
+</html>
+
+
+
+
+
+
+<script>
+
+var to = new Date();
+var to50 = to.setDate( to.getDate() + 50 );
+var tom50 = to.setDate( to.getDate() - 50 );
+var to100 = to.setDate( to.getDate() + 100 );
+var tom100 = to.setDate( to.getDate() - 100 );
+var arr01=[
+	{n:1,date:to,id:100},
+	{n:2,date:to50,id:1100},
+	{n:3,date:tom50,id:1100},
+	{n:4,date:to100,id:10220},
+	{n:5,date:tom100,id:10033},
+];
+
+arr01.sort(function(a,b){
+	if(a.date < b.date)return 1;
+	if(a.date > b.date)return -1;
+});
+
+
+
+var str11="";
+for(i=0;i<arr01.length-1;i++)str11 += arr01[i].n+"_"
+
+
+
+var t=to.getTime();;
+
+
+alert(str11)
+
+
+
+
+window.resizeTo(400,500);
+$(function(){
+	//alert($.cookie( 'adrst') );
+	
+	 $('#adrs').val($.cookie( 'adrst'));
+	
+	
+	$('#adrsb').on('click', function() {
+		//alert( $('#adrs').val() );
+		$.cookie( 'adrst' , $('#adrs').val() ,{ expires: 7 });
+		alert($.cookie( 'adrst') );
+	});
+	$('#btn').on('click', function() {
+		var str01="";
+		
+		// 新規outlookを起動
+		var ol = new ActiveXObject("Outlook.Application");
+
+		// ???
+		var sess = ol.Session
+
+		//// 二つ目のアカウント取得
+		var acc = sess.Accounts.Item("hotmilk005@gmail.com");
+
+		//受信フォルダ
+		var fld = acc.DeliveryStore.GetDefaultFolder(6).Folders("tes");
+		
+		for(i=1;i<fld.items.count;i++){
+			
+			str01 += fld.Items(i);
+		}
+		$("#p").text(str01);
+		/*
+		//メール列挙(iデクリメント)
+		for(i=fld.items.count;i>fld.items.count-m;i--){
+			
+			var itm=fld.Items(i);
+		}
+		*/
+		
+		
+		alert(sess.Accounts.count);
+	});
+});
+
+
+
+</script>
+
+
+
+
+
+
+
